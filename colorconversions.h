@@ -57,15 +57,15 @@ Func xyzToLab(Func f) {
                       f(x, y, 2) / 108.883f);
 
   conv(x, y, c) = select(g(x, y, c) > 0.008856f,
-                         pow(g(x, y, c), 1/3.f),
-                         7.787f * g(x, y, c) + 16/116);
+                         pow(g(x, y, c), 1.f/3.f),
+                         (7.787f * g(x, y, c)) + (16.f/116.f));
   X(x, y) = conv(x, y, 0);
   Y(x, y) = conv(x, y, 1);
   Z(x, y) = conv(x, y, 2);
 
-  out(x, y, c) = select(c == 0, 116 * Y(x,y) - 16,
-                        c == 1, 500 * (X(x,y) - Y(x,y)),
-                        200 * (Y(x,y) - Z(x,y)));
+  out(x, y, c) = select(c == 0, 116.f * Y(x,y) - 16.f,
+                        c == 1, 500.f * (X(x,y) - Y(x,y)),
+                        200.f * (Y(x,y) - Z(x,y)));
 
   return out;
 }
@@ -74,14 +74,14 @@ Func labToXyz(Func f) {
   Var x, y, c;
   Func conv, X, Y, Z, out, g, g0;
 
-  g0(x, y) = (f(x,y,0) + 16) / 116;
-  g(x, y, c) = select(c == 0, g0(x, y),
-                      c == 1, f(x,y,1) / 500 + g0(x,y),
-                      g0(x,y) - f(x,y,2) / 200);
+  g0(x, y) = (f(x,y,0) + 16.f) / 116.f;
+  g(x, y, c) = select(c == 1, g0(x, y),
+                      c == 0, f(x,y,1) / 500.f + g0(x,y),
+                      g0(x,y) - f(x,y,2) / 200.f);
 
   conv(x, y, c) = select(g(x, y, c) > 0.008856f,
-                         pow(g(x, y, c), 3),
-                         (g(x, y, c) - 16 / 116) / 7.787f);
+                         pow(g(x, y, c), 3.f),
+                         (g(x, y, c) - 16.f / 116.f) / 7.787f);
 
   X(x, y) = conv(x, y, 0);
   Y(x, y) = conv(x, y, 1);
@@ -93,6 +93,16 @@ Func labToXyz(Func f) {
                         Z(x,y) * 108.883f);
 
   return out;
+}
+
+
+Func rgbToLab(Func f) {
+  return xyzToLab(rgbToXyz(f));
+}
+
+
+Func labToRgb(Func f) {
+  return xyzToRgb(labToXyz(f));
 }
 
 

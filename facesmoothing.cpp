@@ -35,13 +35,11 @@ int main(int argc, char **argv) {
   Image<uint8_t> input = load_image(argv[1]);
 
   rgb = BoundaryConditions::repeat_edge(input);
-  Lab = xyzToLab(rgbToXyz(rgb));
+  Lab = rgbToLab(rgb);
   gray(x, y) = Lab(x, y, 0);
-
   filtered = bilateralFilter(gray, 1, 1);
   color(x, y, c) = select(c == 0, filtered(x,y), Lab(x,y,c));
-
-  converted = xyzToRgb(labToXyz(Lab));
+  converted = labToRgb(Lab);
   result(x, y, c) = cast<uint8_t>(converted(x,y,c));
 
   Image<uint8_t> output = result.realize(input.width(), input.height(), input.channels());
