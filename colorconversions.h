@@ -1,3 +1,6 @@
+// 2016 Damien Firmenich
+
+
 #include "Halide.h"
 
 #include "halide_image_io.h"
