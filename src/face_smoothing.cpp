@@ -2,6 +2,8 @@
 
 #include "Halide.h"
 #include <stdio.h>
+#include <chrono>
+#include <iostream>
 
 #include "halide_image_io.h"
 #include "color_conv.h"
@@ -23,6 +25,13 @@ Func bilateralFilter(Func im, float sigmaDomain, float sigmaRange) {
 
   out(x, y) = sum(im(x+d.x, y+d.y) * w(x, y, d.x, d.y)) / sum(w(x, y, d.x, d.y));
   outc(x ,y) = clamp(out(x,y), 0.f, 1.f);
+
+  Var xi("xi"), yi("yi"), tidx("tidx");
+
+  outc.compute_root()
+    .tile(x, y, xi, yi, 64, 64)
+    .fuse(x, y, tidx)
+    .parallel(tidx);
 
   return outc;
 }
@@ -71,7 +80,14 @@ int main(int argc, char **argv) {
   nir_base.compute_root();
   smoothed_rgb.compute_root();
 
+  auto t1 = std::chrono::high_resolution_clock::now();
+
   Image<uint8_t> output = result.realize(vis.width(), vis.height(), vis.channels());
+
+  auto t2 = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double, std::milli> fp_ms = t2 - t1;
+  std::cout << "Processing time: " << fp_ms.count() << " ms" << std::endl;
+
   save_image(output, argv[3]);
 
   return 0;
