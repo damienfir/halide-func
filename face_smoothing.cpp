@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #include "halide_image_io.h"
-#include "colorconversions.h"
+#include "color_conv.h"
 
 using namespace Halide;
 using namespace Halide::Tools;

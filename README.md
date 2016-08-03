@@ -25,3 +25,6 @@ C. Fredembach, N. Barbuscia and S. Süsstrunk, Combining visible and near-infrar
 
 S. Süsstrunk, C. Fredembach and D. Tamburrino, Automatic Skin Enhancement with Visible and Near-Infrared Image Fusion, Proc. ACM Multimedia, 2010 (Best Demo Paper Award).
 [Paper](http://infoscience.epfl.ch/record/153994)
+
+
+Copyright &copy; 2016 EPFL
