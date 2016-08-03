@@ -8,7 +8,7 @@ includes=-I $(halide)/include -I $(halide)/tools -L $(halide)/bin
 
 all: $(target)
 
-$(target): face_smoothing.cpp
+$(target): src/face_smoothing.cpp
 		$(cc) $^ $(includes) $(libs) -std=c++11 -o $@
 
 example: $(target)
