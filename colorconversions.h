@@ -84,7 +84,7 @@ Func labToXyz(Func f) {
 
   conv(x, y, c) = select(g(x, y, c) > 0.008856f,
                          pow(g(x, y, c), 3.f),
-                         ((g(x, y, c) - 16.f) / 116.f) / 7.787f);
+                         (g(x, y, c) - 16.f / 116.f) / 7.787f);
 
   X(x, y) = conv(x, y, 0);
   Y(x, y) = conv(x, y, 1);
