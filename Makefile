@@ -9,10 +9,12 @@ includes=-I $(halide)/include -I $(halide)/tools -L $(halide)/bin
 all: $(target)
 
 $(target): src/face_smoothing.cpp
-		$(cc) $^ $(includes) $(libs) -std=c++11 -o $@
+		$(cc) $^ $(includes) $(libs) -std=c++11 -g -o $@
+
+
 
 example: $(target)
-		LD_LIBRARY_PATH=$(halide)/bin ./$(target) images/vis.png images/nir.png smoothed.png
+		LD_LIBRARY_PATH=$(halide)/bin ./$(target) images/vis.png images/nir.png images/smoothed.png
 
 clean:
 		rm $(target)
